@@ -6,7 +6,7 @@ interface Director {
   workDirectorTasks: () => string;
 }
 
-function createEmployee(salary: number): Teacher | Director {
+export function createEmployee(salary: number): Teacher | Director {
   if (salary < 500) {
     return { workTeacherTasks: () => "Getting to work" };
   } else {
@@ -14,20 +14,20 @@ function createEmployee(salary: number): Teacher | Director {
   }
 }
 
-// ✅ Type predicate function
-function isDirector(employee: Teacher | Director): employee is Director {
+// ✅ Type predicate
+export function isDirector(employee: Teacher | Director): employee is Director {
   return (employee as Director).workDirectorTasks !== undefined;
 }
 
-// ✅ executeWork function
-function executeWork(employee: Teacher | Director): void {
+// ✅ Must return, not console.log
+export function executeWork(employee: Teacher | Director): string {
   if (isDirector(employee)) {
-    console.log(employee.workDirectorTasks());
+    return employee.workDirectorTasks();
   } else {
-    console.log(employee.workTeacherTasks());
+    return employee.workTeacherTasks();
   }
 }
 
-// ✅ Expected output
-executeWork(createEmployee(200));   // Getting to work
-executeWork(createEmployee(1000));  // Getting to director tasks
+// Example usage
+console.log(executeWork(createEmployee(200)));   // Getting to work
+console.log(executeWork(createEmployee(1000)));  // Getting to director tasks
